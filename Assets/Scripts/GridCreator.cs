@@ -29,25 +29,18 @@ public class GridCreator : MonoBehaviour
     }
     public void CreateGrid()
     {
+        CleanGrid();
+        CalculateCellSize();
+        PlaceCells();
+    }
+
+    public void CleanGrid()
+    {
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             Transform child = transform.GetChild(i);
             objectPool.ReturnObject(child.gameObject);
-            //Destroy(child.gameObject);
         }
-        CalculateCellSize();
-        PlaceCells();
-        //for (int x = 0; x < gridSize; x++)
-        //{
-        //    for (int y = 0; y < gridSize; y++)
-        //    {
-        //        Vector3 position = new Vector3(x, y, 0);
-        //        GameObject obj = objectPool.GetObject();
-        //        obj.transform.position = position;
-        //        obj.transform.SetParent(transform);
-        //        //Instantiate(squarePrefab, position, Quaternion.identity, transform);
-        //    }
-        //}
     }
     private void CalculateCellSize()
     {

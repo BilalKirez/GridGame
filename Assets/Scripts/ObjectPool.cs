@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     public GameObject prefab;
-    public int initialPoolSize = 10;
+    public int initialPoolSize;
 
     private Queue<GameObject> pool = new Queue<GameObject>();
 
@@ -40,5 +40,11 @@ public class ObjectPool : MonoBehaviour
         obj.SetActive(false);
         pool.Enqueue(obj);
         obj.transform.SetParent(transform);
+        ResetObject(obj);
+    }
+    public void ResetObject(GameObject poolObject)
+    {
+        poolObject.transform.position = Vector3.zero;
+        poolObject.transform.localScale = Vector3.one;
     }
 }
