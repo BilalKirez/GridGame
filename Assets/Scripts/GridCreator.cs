@@ -13,6 +13,8 @@ public class GridCreator : MonoBehaviour
     public ObjectPool objectPool;
     private float cellScale;
     private Camera mainCamera;
+    public CellMarker[,] cellMarkers;
+    public List<CellMarker> connectedMarkedCells = new List<CellMarker>();
 
     // Start is called before the first frame update
     void Start()
@@ -27,9 +29,14 @@ public class GridCreator : MonoBehaviour
     {
         gridSize = int.Parse(text);
     }
+    public void ResetCellArray()
+    {
+        cellMarkers = new CellMarker[gridSize, gridSize];
+    }
     public void CreateGrid()
     {
         CleanGrid();
+        ResetCellArray();
         CalculateCellSize();
         PlaceCells();
     }
@@ -41,6 +48,7 @@ public class GridCreator : MonoBehaviour
             Transform child = transform.GetChild(i);
             objectPool.ReturnObject(child.gameObject);
         }
+        ResetCellArray();
     }
     private void CalculateCellSize()
     {
@@ -63,6 +71,11 @@ public class GridCreator : MonoBehaviour
                 obj.transform.position = position;
                 obj.transform.SetParent(transform);
                 obj.transform.localScale = new Vector3(cellScale, cellScale, 1);
+                var cellMarker = obj.GetComponent<CellMarker>();
+                cellMarker.ResetCell();
+                cellMarker.index = new Vector2Int(i, j);
+                cellMarkers[i, j] = cellMarker;
+                cellMarker.gridCreator = this;
             }
         }
     }
