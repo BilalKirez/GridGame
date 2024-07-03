@@ -13,10 +13,8 @@ public class GridCreator : MonoBehaviour
     public ObjectPool objectPool;
     private float cellScale;
     private Camera mainCamera;
-    public CellMarker[,] cellMarkers;
-    public List<CellMarker> connectedMarkedCells = new List<CellMarker>();
+    public GridManager gridManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
@@ -25,14 +23,17 @@ public class GridCreator : MonoBehaviour
         SetGridSize(inputField.text);
         CreateGrid();
     }
+
     public void SetGridSize(string text)
     {
         gridSize = int.Parse(text);
     }
+
     public void ResetCellArray()
     {
-        cellMarkers = new CellMarker[gridSize, gridSize];
+        gridManager.cellMarkers = new CellMarker[gridSize, gridSize];
     }
+
     public void CreateGrid()
     {
         CleanGrid();
@@ -50,6 +51,7 @@ public class GridCreator : MonoBehaviour
         }
         ResetCellArray();
     }
+
     private void CalculateCellSize()
     {
         float screenHeight = 2f * mainCamera.orthographicSize;
@@ -57,6 +59,7 @@ public class GridCreator : MonoBehaviour
 
         cellScale = Mathf.Min(screenWidth / gridSize, screenHeight / gridSize);
     }
+
     private void PlaceCells()
     {
         float startX = -((gridSize - 1) * cellScale) / 2f;
@@ -74,8 +77,8 @@ public class GridCreator : MonoBehaviour
                 var cellMarker = obj.GetComponent<CellMarker>();
                 cellMarker.ResetCell();
                 cellMarker.index = new Vector2Int(i, j);
-                cellMarkers[i, j] = cellMarker;
-                cellMarker.gridCreator = this;
+                gridManager.cellMarkers[i, j] = cellMarker;
+                cellMarker.gridManager = gridManager;
             }
         }
     }
