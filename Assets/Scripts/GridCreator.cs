@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class GridCreator : MonoBehaviour
 {
     public int gridSize;
-    public GameObject squarePrefab;
     public TMP_InputField inputField;
     public Button createButton;
     public ObjectPool objectPool;
@@ -49,7 +48,6 @@ public class GridCreator : MonoBehaviour
             Transform child = transform.GetChild(i);
             objectPool.ReturnObject(child.gameObject);
         }
-        ResetCellArray();
     }
 
     private void CalculateCellSize()
